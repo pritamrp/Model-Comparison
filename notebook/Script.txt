@@ -1,0 +1,22 @@
+import pandas as pd
+from sklearn.datasets import fetch_20newsgroups
+
+def collect_sample_data():
+    """Collect sample text data for sentiment analysis"""
+    # Using 20newsgroups as sample data
+    categories = ['alt.atheism', 'soc.religion.christian']
+    newsgroups = fetch_20newsgroups(subset='train', categories=categories)
+    
+    # Create a simple sentiment dataset
+    data = []
+    for i, text in enumerate(newsgroups.data[:1000]):  # Limit to 1000 samples
+        label = 1 if newsgroups.target[i] == 1 else 0  # Binary classification
+        data.append({'text': text, 'sentiment': label})
+    
+    df = pd.DataFrame(data)
+    df.to_csv('data/raw/sample_data.csv', index=False)
+    print(f"Collected {len(df)} samples")
+    return df
+
+if __name__ == "__main__":
+    collect_sample_data()
